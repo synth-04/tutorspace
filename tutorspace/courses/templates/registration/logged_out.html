@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Logout{% endblock %}
+
+{% block wrapper_class %}fade-in main-content-narrow{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">Sei uscito</h1>
+  <p class="text-muted">Hai effettuato il logout correttamente.</p>
+  <a href="{% url 'login' %}" class="btn btn-outline-dark">Accedi di nuovo</a>
+{% endblock %}

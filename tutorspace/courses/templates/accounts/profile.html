@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Profilo utente{% endblock %}
+
+{% block wrapper_class %}fade-in main-content-narrow{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">{{ user.username }}</h1>
+
+  <ul class="list-group mb-4">
+    <li class="list-group-item"><strong>Username:</strong> {{ user.username }}</li>
+    <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
+    <li class="list-group-item"><strong>Nome:</strong> {{ user.first_name|default:"—" }}</li>
+    <li class="list-group-item"><strong>Cognome:</strong> {{ user.last_name|default:"—" }}</li>
+    <li class="list-group-item"><strong>Data di registrazione:</strong> {{ user.date_joined|date:"d/m/Y" }}</li>
+    <li class="list-group-item"><strong>Ultimo accesso:</strong> {{ user.last_login|date:"d/m/Y H:i" }}</li>
+    <li class="list-group-item"><strong>Superuser:</strong> {{ user.is_superuser|yesno:"Sì,No" }}</li>
+  </ul>
+
+  <a href="{% url 'course_list' %}" class="btn btn-custom">Vai ai corsi</a>
+{% endblock %}

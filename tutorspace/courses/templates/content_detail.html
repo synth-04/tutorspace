@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block wrapper_class %}fade-in main-content-wide{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">{{ object.title }}</h1>
+  <p class="lead">{{ object.description| safe }}</p>
+
+  <h5 class="mt-5">Risorse</h5>
+
+  {% if object.resources.exists %}
+    <ul class="list-group mb-4">
+      {% for resource in object.resources.all %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{ resource.title }}
+          <a href="{{ resource.file.url }}" class="btn btn-sm btn-custom" download>Scarica</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-muted">Nessuna risorsa disponibile per questo contenuto.</p>
+  {% endif %}
+
+  <a href="{% url 'module_detail' course_slug=object.module.course.slug pk=object.module.pk %}"
+     class="btn btn-outline-dark">
+    ← Torna al modulo
+  </a>
+{% endblock %}

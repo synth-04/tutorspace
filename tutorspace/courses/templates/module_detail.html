@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+  {{ object.title }}
+{% endblock %}
+
+{% block wrapper_class %}fade-in main-content-wide{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">{{ object.title }}</h1>
+  <p class="lead">{{ object.description|linebreaks }}</p>
+
+  <h2 class="mt-5 mb-3">Contenuti</h2>
+
+  {% if object.contents.exists %}
+    {% for content in object.contents.all %}
+      <div class="card mb-3">
+        <div class="card-header p-2">
+          <button
+            class="btn btn-link"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapse-content-{{ content.pk }}"
+            aria-expanded="false"
+            aria-controls="collapse-content-{{ content.pk }}"
+          >
+            {{ content.title }}
+          </button>
+        </div>
+
+        <div
+          id="collapse-content-{{ content.pk }}"
+          class="collapse"
+          aria-labelledby="heading-content-{{ content.pk }}"
+        >
+          <div class="card-body">
+            <p>{{ content.description| safe | truncatewords:"100" }}</p>
+
+            <h6 class="mt-4">Risorse</h6>
+            {% if content.resources.exists %}
+              <ul class="list-unstyled">
+                {% for resource in content.resources.all %}
+                  <li class="mb-2">
+                    {{  resource.title }} 
+                    <a href="{{ resource.file.url }}" class="button">
+                    Scarica </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="text-muted">Nessuna risorsa disponibile.</p>
+            {% endif %}
+            <a href="{% url 'content_detail' course_slug=object.course.slug module_pk=object.pk pk=content.pk %}" 
+            class="btn btn-outline-dark">
+              Entra
+            </a>
+              
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Ancora nessun contenuto disponibile.</p>
+  {% endif %}
+{% endblock %}

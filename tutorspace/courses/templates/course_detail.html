@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+  {{ course.title }}
+{% endblock %}
+
+{% block wrapper_class %}fade-in main-content-wide{% endblock %}
+
+{% block content %}
+
+  <h1 class="mb-4">{{ course.title }}</h1>
+  <p class="lead">{{ course.overview|linebreaks }}</p>
+
+  <h2 class="mt-5 mb-3">Moduli</h2>
+  <div class="row row-cols-1 row-cols-md-1 row-cols-lg-1 g-4">
+    {% for module in modules %}
+      <div class="col d-flex justify-content-center">
+        <div class="card h-100">
+          {% if module.image %}
+            <img src="{{ module.image.url }}" class="card-img-top" alt="{{ module.title }}">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ module.title }}</h5>
+            <p class="card-text">
+              {{ module.description | truncatewords:"100" }}
+            </p>
+          </div>
+          <div class="card-footer bg-transparent border-0">
+            <a href="{% url 'module_detail' course_slug=course.slug pk=module.pk %}"
+               class="btn btn-outline-dark">
+              Vai al modulo
+            </a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <p>Ancora nessun modulo disponibile.</p>
+      </div>
+    {% endfor %}
+  </div>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Lista Corsi{% endblock %}
+
+{% block wrapper_class %}fade-in main-content-wide{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-4">Corsi</h1>
+
+<div class="row row-cols-1 row-cols-md-1 row-cols-lg-1 g-4">
+
+  {% for course in courses %}
+    <div class="col d-flex justify-content-center">
+      <div class="card h-100 w-100">
+        <img src="" class="card-img-top" alt="">
+        <div class="card-body">
+          <h5 class="card-title">{{ course.title }}</h5>
+          <p class="card-text">{{ course.overview | truncatewords:"50" }}</p>
+        </div>
+        <div class="card-footer bg-transparent border-0">
+          <a href="{% url 'course_detail' course.slug %}" class="btn btn-outline-dark">Vai al corso</a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>Ancora nessun corso.</p>
+  {% endfor %}
+
+</div>
+
+{% endblock %}
