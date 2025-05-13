@@ -15,7 +15,16 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="{% url 'index' %}">Tutor Space</a>
-            <div class="collapse navbar-collapse">
+
+            <!-- BOTTONE BURGER -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+
+
+            <!-- CONTENUTO COLLASSABILE -->
+            <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
@@ -28,6 +37,13 @@
                                 Profilo
                             </a>
                         </li>
+                        {% if user.is_superuser%}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'admin:index' %}">
+                                Admin
+                            </a>
+                        </li>
+                        {% endif %}
                         <li class="nav-item">
                             <form method="post" action="{% url 'logout' %}" class="d-inline">
                                 {% csrf_token %}

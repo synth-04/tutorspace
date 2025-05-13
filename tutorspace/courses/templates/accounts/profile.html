@@ -17,5 +17,5 @@
     <li class="list-group-item"><strong>Superuser:</strong> {{ user.is_superuser|yesno:"Sì,No" }}</li>
   </ul>
 
-  <a href="{% url 'course_list' %}" class="btn btn-custom">Vai ai corsi</a>
+  <a href="{% url 'course_list' %}" class="btn btn-outline-dark">Vai ai corsi</a>
 {% endblock %}

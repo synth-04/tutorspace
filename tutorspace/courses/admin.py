@@ -5,9 +5,11 @@ from .models import Course, Module, Content, Resource
 
 class ModuleInline(admin.StackedInline):
     model = Module
+    filter_horizontal = ('unlocked_groups',)
 
 class ContentInline(admin.StackedInline):
     model = Content
+    filter_horizontal = ('unlocked_groups',)
 
 class ResourceInline(admin.StackedInline):
     model = Resource
@@ -25,8 +27,7 @@ class ModuleAdmin(admin.ModelAdmin):
 @admin.register(Content)
 class CourseAdmin(admin.ModelAdmin):
     inlines = [ResourceInline]
+    filter_horizontal = ('unlocked_groups',)
 
-#admin.site.register(Course)
-#admin.site.register(Module)
 admin.site.register(Resource)
 

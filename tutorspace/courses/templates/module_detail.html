@@ -14,7 +14,7 @@
   <h2 class="mt-5 mb-3">Contenuti</h2>
 
   {% if object.contents.exists %}
-    {% for content in object.contents.all %}
+    {% for content in contents %}
       <div class="card mb-3">
         <div class="card-header p-2">
           <button
@@ -63,4 +63,10 @@
   {% else %}
     <p>Ancora nessun contenuto disponibile.</p>
   {% endif %}
+
+  <a href="{% url 'course_detail' slug=module.course.slug %}"
+   class="btn btn-outline-dark">
+  ← Torna al corso
+</a>
+
 {% endblock %}

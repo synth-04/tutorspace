@@ -1,0 +1,22 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+  {{ block.super }}
+    <link rel="stylesheet" href="{% static 'courses/css/admin.css' %}">
+{% endblock %}
+
+{% block title %}
+  Tutor Space Admin | {{ site_title|default:_("Django administration") }}
+{% endblock %}
+
+{% block branding %}
+  <h1 id="site-name"><a href="{% url 'admin:index' %}">Tutor Space Admin</a></h1>
+{% endblock %}
+
+{% block content %}
+  <div class="fade-in" style="margin: 0 auto;">
+    {{ block.super }}
+  </div>
+{% endblock %}
+

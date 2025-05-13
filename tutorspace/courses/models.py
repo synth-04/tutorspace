@@ -60,6 +60,10 @@ class Content(models.Model):
         ('video', 'Video'),
         ('quiz', 'Quiz')
     ])
+    
+    unlocked_groups  = models.ManyToManyField(
+        Group, blank=True, related_name='unlocked_contents'
+    )
 
     class Meta:
         ordering = ('order',)

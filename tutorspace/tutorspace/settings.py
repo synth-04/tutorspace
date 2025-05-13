@@ -31,14 +31,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'grappelli',
+    'courses',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'courses',
     'ckeditor',
     'ckeditor_uploader',
 ]
@@ -67,6 +66,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
         },
+        'DIRS': [ BASE_DIR / 'templates' ],
+        'APP_DIRS': True,
     },
 ]
 
@@ -131,3 +132,4 @@ CKEDITOR_UPLOAD_PATH = '/media/'
 
 LOGIN_REDIRECT_URL = 'course_list'
 LOGOUT_REDIRECT_URL = 'index'
+

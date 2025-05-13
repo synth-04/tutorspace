@@ -32,14 +32,14 @@ class CourseDetailView(DetailView, LoginRequiredMixin):
         ).distinct()
 
     def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         user_groups = self.request.user.groups.all()
-        ctx['modules'] = (
+        context['modules'] = (
             self.object.modules
                 .filter(unlocked_groups__in=user_groups)
                 .distinct()
         )
-        return ctx
+        return context
 
 class ModuleDetailView(DetailView, LoginRequiredMixin):
     model = Module
@@ -52,6 +52,14 @@ class ModuleDetailView(DetailView, LoginRequiredMixin):
             Q(course__allowed_groups__in=user_groups,
             unlocked_groups__in=user_groups)
         ).distinct()
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_groups = self.request.user.groups.all()
+        context['contents'] = self.object.contents.filter(
+            unlocked_groups__in=user_groups
+        ).distinct()
+        return context
         
 class ContentDetailView(DetailView, LoginRequiredMixin):
     model = Content
