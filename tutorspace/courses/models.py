@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
-from django_ckeditor_5.fields import CKEditor5Field
 from django.contrib.auth.models import Group
-from .fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 
 class Course(models.Model):
     owner = models.ForeignKey(
@@ -48,7 +47,7 @@ class Content(models.Model):
         on_delete=models.CASCADE
     )
     title = models.CharField(max_length=200)
-    description = RichTextField()
+    description = CKEditor5Field('Text', config_name='extends')
     order = models.IntegerField(default=0)
     content_type = models.CharField(max_length=50, choices=[
         ('text', 'Testo'),
