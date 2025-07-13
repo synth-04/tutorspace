@@ -1,6 +1,10 @@
 from django.contrib import admin
 from .models import Course, Module, Content, Resource
 
+from django.contrib.auth.models import Group
+from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin
+from .models import GroupProfile
+
 # Register your models here.
 
 class ModuleInline(admin.StackedInline):
@@ -30,4 +34,17 @@ class CourseAdmin(admin.ModelAdmin):
     filter_horizontal = ('unlocked_groups',)
 
 admin.site.register(Resource)
+
+class GroupProfileInline(admin.StackedInline):
+    model = GroupProfile
+    can_delete = False
+    verbose_name_plural = "Impostazioni Classe"
+    extra = 1       
+    max_num = 1     
+
+class GroupAdmin(BaseGroupAdmin):
+    inlines = (GroupProfileInline,)
+
+admin.site.unregister(Group)
+admin.site.register(Group, GroupAdmin)
 

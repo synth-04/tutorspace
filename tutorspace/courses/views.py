@@ -5,6 +5,10 @@ from django.views.generic.detail import DetailView
 from .models import Course, Module, Content
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from .forms import StudentSignUpForm
+
 
 def index(request):
     return render(request, 'index.html' )
@@ -68,3 +72,8 @@ class ContentDetailView(DetailView, LoginRequiredMixin):
 
     def get_queryset(self):
         return Content.objects.filter(module__pk=self.kwargs['module_pk'], module__course__slug=self.kwargs['course_slug'])
+
+class StudentSignUpView(CreateView):
+    form_class    = StudentSignUpForm
+    template_name = "registration/signup.html"
+    success_url   = reverse_lazy("login")

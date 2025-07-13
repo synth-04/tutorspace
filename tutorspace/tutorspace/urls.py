@@ -21,6 +21,7 @@ from courses import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
+from courses.views import StudentSignUpView
 
 urlpatterns = [
 
@@ -40,6 +41,10 @@ urlpatterns = [
     path('logout/',
         auth_views.LogoutView.as_view(next_page='index'),
         name='logout'),
+    
+    path('signup/', 
+         StudentSignUpView.as_view(), 
+         name='signup'),
     
     path(
     'accounts/profile/',

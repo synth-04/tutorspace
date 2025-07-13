@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
 from django_ckeditor_5.fields import CKEditor5Field
+from django.contrib.auth.models import Group
+from .fields import RichTextField
 
 class Course(models.Model):
     owner = models.ForeignKey(
@@ -46,7 +48,7 @@ class Content(models.Model):
         on_delete=models.CASCADE
     )
     title = models.CharField(max_length=200)
-    description = CKEditor5Field()
+    description = RichTextField()
     order = models.IntegerField(default=0)
     content_type = models.CharField(max_length=50, choices=[
         ('text', 'Testo'),
@@ -83,3 +85,14 @@ class Resource(models.Model):
 
     def __str__(self):
         return self.description[:50]
+    
+    
+class GroupProfile(models.Model):
+    group = models.OneToOneField(Group,
+                                 related_name='profile',
+                                 on_delete=models.CASCADE)
+    selectable = models.BooleanField(default=False,
+                                     help_text="Se True, il gruppo appare nel dropdown di registrazione")
+
+    def __str__(self):
+        return f"Profile di {self.group.name}"
