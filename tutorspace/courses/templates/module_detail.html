@@ -35,7 +35,11 @@
           aria-labelledby="heading-content-{{ content.pk }}"
         >
           <div class="card-body">
-            <p>{{ content.description| safe | truncatewords:"100" }}</p>
+           <!-- <p>{{ content.description| safe | truncatewords:"100" }}</p> -->
+          <a href="{% url 'content_detail' course_slug=object.course.slug module_pk=object.pk pk=content.pk %}" 
+            class="btn btn-outline-dark">
+              Entra
+            </a>
 
             <h6 class="mt-4">Risorse</h6>
             {% if content.resources.exists %}
@@ -49,12 +53,9 @@
                 {% endfor %}
               </ul>
             {% else %}
-              <p class="text-muted">Nessuna risorsa disponibile.</p>
+              <p class="text-muted">Nessuna risorsa scaricabile.</p>
             {% endif %}
-            <a href="{% url 'content_detail' course_slug=object.course.slug module_pk=object.pk pk=content.pk %}" 
-            class="btn btn-outline-dark">
-              Entra
-            </a>
+            
               
           </div>
         </div>
@@ -66,7 +67,7 @@
 
   <a href="{% url 'course_detail' slug=module.course.slug %}"
    class="btn btn-outline-dark">
-  ← Torna al corso
+  Torna al corso
 </a>
 
 {% endblock %}
