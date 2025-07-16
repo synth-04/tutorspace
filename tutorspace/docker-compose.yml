@@ -1,10 +1,26 @@
-
+version: '3.8'
 services:
+  db:
+    image: postgres:15
+    container_name: tutorspace-db
+    environment:
+      POSTGRES_DB: tutorspace_db
+      POSTGRES_USER: gabri
+      POSTGRES_PASSWORD: test
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
   web:
     build: .
+    container_name: tutorspace-web
+    depends_on:
+      - db
     ports:
       - "8000:8000"
-    volumes:
-      - .:/app
     environment:
-      - DEBUG=1
+      DB_HOST: db
+
+volumes:
+  postgres_data:

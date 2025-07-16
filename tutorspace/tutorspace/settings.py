@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,10 +78,14 @@ WSGI_APPLICATION = 'tutorspace.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+  'default': {
+    'ENGINE':   'django.db.backends.postgresql',
+    'NAME':     os.getenv('POSTGRES_DB',     'tutorspace_db'),
+    'USER':     os.getenv('POSTGRES_USER',   'gabri'),
+    'PASSWORD': os.getenv('POSTGRES_PASSWORD','test'),
+    'HOST':     os.getenv('DB_HOST',         'db'),
+    'PORT':     '5432',
+  }
 }
 
 
