@@ -93,8 +93,8 @@ WSGI_APPLICATION = 'tutorspace.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),
-        ssl_require=True
+        default='postgresql://tutorspace_db_user:27v40y2Yl6yPORDOQqVigxZkNQ0cnbJv@dpg-d1s2mvp5pdvs73cqqpqg-a/tutorspace_db',
+        conn_max_age=600
     )
 }
 
