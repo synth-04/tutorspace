@@ -30,7 +30,7 @@ from django.contrib.auth import get_user_model; \
 import os; \
 User=get_user_model(); \
 if os.getenv('DJANGO_SUPERUSER_USERNAME') and not User.objects.filter(is_superuser=True).exists(): \
-    User.objects.create_superuser(os.getenv('DJANGO_SUPERUSER_USERNAME'),os.getenv('DJANGO_SUPERUSER_EMAIL'),os.getenv('DJANGO_SUPERUSER_PASSWORD'))\" && \
+    User.objects.create_superuser(os.environ.get('DJANGO_SUPERUSER_USERNAME'),os.environ.get('DJANGO_SUPERUSER_EMAIL'),os.environ.get('DJANGO_SUPERUSER_PASSWORD'))\" && \
   # Raccolta statici \
   python manage.py collectstatic --noinput && \
   # Avvio Gunicorn \
