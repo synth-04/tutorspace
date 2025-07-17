@@ -21,6 +21,26 @@ COPY . .
 EXPOSE 8000
 
 # Comando di default: avvia il server Django
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn tutorspace.wsgi:application --bind 0.0.0.0:8000"]
+CMD ["sh", "-c", "\
+  until pg_isready -h \"$DB_HOST\" -p \"$DB_PORT\"; do \
+    echo 'Waiting for database…'; sleep 1; \
+  done && \
+  # Migrazioni \
+  python manage.py migrate --noinput && \
+  # Creazione superuser se non esiste \
+  python manage.py shell -c \"\
+from django.contrib.auth import get_user_model; \
+import os; \
+User=get_user_model(); \
+if os.getenv('DJANGO_SUPERUSER_USERNAME') and not User.objects.filter(is_superuser=True).exists(): \
+    User.objects.create_superuser(\
+        os.getenv('DJANGO_SUPERUSER_USERNAME'),\
+        os.getenv('DJANGO_SUPERUSER_EMAIL'),\
+        os.getenv('DJANGO_SUPERUSER_PASSWORD')\
+    )\" && \
+  # Raccolta statici \
+  python manage.py collectstatic --noinput && \
+  # Avvio Gunicorn \
+  gunicorn tutorspace.wsgi:application --bind 0.0.0.0:8000 \
+"]
 
