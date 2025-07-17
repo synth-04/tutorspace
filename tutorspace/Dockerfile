@@ -1,39 +1,38 @@
-# Dockerfile
-
 FROM python:3.11-slim
-
 WORKDIR /app
 
-RUN apt-get update \
- && apt-get install -y --no-install-recommends \
-      libpq-dev \
-      gcc \
- && rm -rf /var/lib/apt/lists/*
+# 1) installa dipendenze di sistema
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libpq-dev gcc postgresql-client && \
+    rm -rf /var/lib/apt/lists/*
 
-# Installa dipendenze
+# 2) installa dipendenze Python
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia tutto il progetto
+# 3) copia il codice
 COPY . .
 
-# Espone la porta 8000
+# 4) espone la porta
 EXPOSE 8000
 
-# Comando di default: avvia il server Django
-CMD ["sh", "-c", "\
-  # Migrazioni \
+CMD ["bash","-lc", "\
+  # applica le migrazioni \
   python manage.py migrate --noinput && \
-  # Creazione superuser se non esiste \
+  # crea superuser se non esiste (usa env var) \
   python manage.py shell -c \"\
-from django.contrib.auth import get_user_model; \
 import os; \
+from django.contrib.auth import get_user_model; \
 User=get_user_model(); \
-if os.getenv('DJANGO_SUPERUSER_USERNAME') and not User.objects.filter(is_superuser=True).exists(): \
-    User.objects.create_superuser(os.environ.get('DJANGO_SUPERUSER_USERNAME'),os.environ.get('DJANGO_SUPERUSER_EMAIL'),os.environ.get('DJANGO_SUPERUSER_PASSWORD'))\" && \
-  # Raccolta statici \
+uname=os.environ.get('DJANGO_SUPERUSER_USERNAME'); \
+email=os.environ.get('DJANGO_SUPERUSER_EMAIL'); \
+pwd=os.environ.get('DJANGO_SUPERUSER_PASSWORD'); \
+uname and not User.objects.filter(is_superuser=True).exists() and \
+User.objects.create_superuser(uname,email,pwd)\" && \
+  # raccogli static files \
   python manage.py collectstatic --noinput && \
-  # Avvio Gunicorn \
-  gunicorn tutorspace.wsgi:application --bind 0.0.0.0:8000 \
+  # infine avvia Gunicorn \
+  exec gunicorn tutorspace.wsgi:application --bind 0.0.0.0:8000 \
 "]
+
 
