@@ -22,9 +22,6 @@ EXPOSE 8000
 
 # Comando di default: avvia il server Django
 CMD ["sh", "-c", "\
-  until pg_isready -h \"$DB_HOST\" -p \"$DB_PORT\"; do \
-    echo 'Waiting for database…'; sleep 1; \
-  done && \
   # Migrazioni \
   python manage.py migrate --noinput && \
   # Creazione superuser se non esiste \
